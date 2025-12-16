@@ -1,0 +1,103 @@
+.landingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  padding: 60px;
+}
+
+.logoText {
+  font-size: 48px !important;
+  font-weight: 800 !important;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.taglineText {
+  font-size: 24px !important;
+  margin-bottom: 40px !important;
+  line-height: 1;
+}
+
+.classesGrid {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.classCard {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 24px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+}
+
+.classCard:hover {
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.12);
+}
+
+.classCode {
+  font-size: 0.8rem !important;
+  line-height: 1;
+  font-weight: 600 !important;
+  margin-bottom: -4px !important;
+}
+
+.classTitle {
+  font-size: 1.2rem !important;
+  line-height: 1;
+  font-weight: 800 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.instructorIcon {
+  font-size: 1rem !important;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.classDescription {
+  display: inline;
+  font-size: 0.98rem;
+  vertical-align: middle;
+}
+
+.greenDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #4caf50;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  margin-left: 3px;
+}
+
+.classMembers {
+  display: inline;
+  font-size: 0.98rem;
+  color: #444;
+  vertical-align: middle;
+}
+
+.joinButton {
+  margin-top: 20px;
+  padding: 8px 24px !important;
+  color: #000 !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 8px;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  align-self: flex-end;
+  text-transform: none !important;
+}
