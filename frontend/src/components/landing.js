@@ -7,18 +7,29 @@ import {
   Box,
   Typography,
   Grid,
-  Button
+  Button,
+  TextField,
+  InputAdornment
 } from '@mui/material'
 
 import { useRouter } from 'next/navigation';
 
 import InstructorIcon from '@mui/icons-material/AccountCircleOutlined';
 import CheckmarkIcon from '@mui/icons-material/CheckTwoTone';
+import SearchIcon from '@mui/icons-material/Search';
+import UploadIcon from '@mui/icons-material/Upload';
 import styles from './landing.module.css'
 
 export default function Landing() {
   const [classes, setClasses] = useState([]);
+  const [search, setSearch] = useState('');
   const router = useRouter();
+  
+  const filteredClasses = classes.filter(classItem =>
+    classItem.code.toLowerCase().includes(search.toLowerCase()) ||
+    classItem.title.toLowerCase().includes(search.toLowerCase()) ||
+    classItem.instructor.toLowerCase().includes(search.toLowerCase())
+  );
 
   useEffect(() => {
     // Simulate fetching class data
@@ -44,9 +55,38 @@ export default function Landing() {
         <Typography className={styles.taglineText}>
           All your class group chats in one place.
         </Typography>
+
+        <Box className={styles.searchContainer}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search your classes"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            size="small"
+            className={styles.searchBar}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+          <Button className={styles.uploadButton}>
+            <UploadIcon className={styles.uploadIcon} />
+            Upload from ICS
+          </Button>
+        </Box>
+
         { classes.length !== 0 &&
           <Grid container spacing={1.5} className={styles.classesGrid}>
-            {classes.map((classItem, index) => (
+            <Grid item size={12}>
+              <Typography className={styles.coursesFoundText}>{filteredClasses.length} courses found</Typography>
+            </Grid>
+            {filteredClasses.map((classItem, index) => (
               <Grid item size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                 <Box className={styles.classCard}>
                   <Typography className={styles.classCode}>

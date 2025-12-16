@@ -113,3 +113,35 @@
   margin-right: 4px;
   margin-bottom: 2px
 }
+
+.coursesFoundText {
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  margin-left: 10px !important;
+}
+
+.searchContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1000px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searchBar {
+  flex: 1
+}
+
+.uploadButton {
+  margin-left: 20px !important;
+  padding: 4px 16px !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  border-radius: 8px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-transform: none !important;
+}
