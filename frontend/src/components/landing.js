@@ -13,6 +13,7 @@ import {
 import { useRouter } from 'next/navigation';
 
 import InstructorIcon from '@mui/icons-material/AccountCircleOutlined';
+import CheckmarkIcon from '@mui/icons-material/CheckTwoTone';
 import styles from './landing.module.css'
 
 export default function Landing() {
@@ -24,9 +25,9 @@ export default function Landing() {
     const fetchClasses = async () => {
       // Replace with actual data fetching logic
       const classData = [
-        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18 },
-        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18 },
-        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18 },
+        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: true },
+        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: false },
+        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: false },
       ];
       setClasses(classData);
     }
@@ -66,8 +67,15 @@ export default function Landing() {
                       {classItem.members} members
                     </Typography>
                   </Box>
-                  <Button className={styles.joinButton} onClick={() => router.push('/chat?class=' + classItem.code)}>
-                    Join
+                  <Button className={`${styles.joinButton} ${classItem.joined ? styles.joined : ''}`} onClick={() => router.push('/chat?class=' + classItem.code)}>
+                    {classItem.joined ? 
+                    <>
+                      <CheckmarkIcon className={styles.checkmark} />
+                      Joined
+                    </>
+                      :
+                      'Join'
+                    }
                   </Button>
                 </Box>
               </Grid>

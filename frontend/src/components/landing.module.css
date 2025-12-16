@@ -90,14 +90,26 @@
 
 .joinButton {
   margin-top: 20px;
-  padding: 8px 24px !important;
+  padding: 6px 20px !important;
   color: #000 !important;
-  border: 1px solid #e0e0e0 !important;
-  border-radius: 8px;
+  border: 1px solid #000 !important;
+  border-radius: 8px !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
   cursor: pointer;
   transition: background-color 0.2s;
   align-self: flex-end;
   text-transform: none !important;
+}
+
+.joined {
+  background-color: #3fc759 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.checkmark {
+  font-size: 1.4rem !important;
+  margin-right: 4px;
+  margin-bottom: 2px
 }
