@@ -1,0 +1,27 @@
+.navIcon {
+  font-size: 32px;
+  color: #979797;
+}
+
+.filledIcon {
+  color: #0089f9;
+}
+
+.navbarContainer {
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.navList {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
