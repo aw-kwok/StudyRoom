@@ -34,16 +34,46 @@ export default function Landing() {
     classItem.instructor.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleJoinClick = (classCode) => {
+    setClasses(prevClasses => {
+      const updatedClasses = prevClasses.map(classItem => {
+        if (classItem.code === classCode) {
+          const newJoinedState = !classItem.joined;
+          const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
+          
+          if (newJoinedState) {
+            joinedCourses[classCode] = true;
+            localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
+            router.push('/chat?class=' + classCode);
+          } else {
+            delete joinedCourses[classCode];
+            localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
+          }
+          
+          return { ...classItem, joined: newJoinedState };
+        }
+        return classItem;
+      });
+      return updatedClasses;
+    });
+  };
+
   useEffect(() => {
-    // Simulate fetching class data
     const fetchClasses = async () => {
-      // Replace with actual data fetching logic
       const classData = [
-        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: true },
+        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: false },
         { code: "PHYSUN1494", title: 'Intro to Exp Phys-Lab', instructor: 'Giuseppina Cambareri (gc2019)', members: 42, joined: false },
         { code: "PHYSUN2801", title: 'Accelerated Physics I', instructor: 'Yury Levin (yl3470)', members: 13, joined: false },
       ];
-      setClasses(classData);
+      
+      const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
+      
+      const updatedClassData = classData.map(classItem => ({
+        ...classItem,
+        joined: joinedCourses[classItem.code] || false
+      }));
+      
+      setClasses(updatedClassData);
     }
     fetchClasses();
   }, []);
@@ -118,7 +148,7 @@ export default function Landing() {
                       {classItem.members} members
                     </Typography>
                   </Box>
-                  <Button className={`${styles.joinButton} ${classItem.joined ? styles.joined : ''}`} onClick={() => router.push('/chat?class=' + classItem.code)}>
+                  <Button className={`${styles.joinButton} ${classItem.joined ? styles.joined : ''}`} onClick={() => handleJoinClick(classItem.code)}>
                     {classItem.joined ? 
                     <>
                       <CheckmarkIcon className={styles.checkmark} />
