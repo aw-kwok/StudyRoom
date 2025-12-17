@@ -1,288 +1,469 @@
-.profileContainer {
-  display: flex;
-  flex-direction: column;
+.container {
+  background-color: #ffffff;
   min-height: 100vh;
-  background-color: var(--background);
-  color: var(--foreground);
-  padding: 30px 60px 60px 80px;
+  position: relative;
+  font-family: "Hanken Grotesk", Helvetica, Arial, sans-serif;
 }
 
-.header {
+.topBar {
+  background-color: #0088f8;
+  height: 50px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  justify-content: space-between;
+  padding: 0 17px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.logoText {
+  color: #f5f5f5;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+}
+
+.logoutIcon {
+  color: white;
+  cursor: pointer;
 }
 
 .pageTitle {
-  font-size: 28px !important;
-  font-weight: 700 !important;
-  color: #0089F9 !important;
-}
-
-.headerRight {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.searchBar {
-  width: 200px;
-}
-
-.searchBar fieldset {
-  border-radius: 8px;
-}
-
-.searchIcon {
-  color: #888;
-  font-size: 20px !important;
-}
-
-.headerIcon {
-  font-size: 28px !important;
-  color: #333;
-  cursor: pointer;
+  color: #000000;
+  font-size: 36px !important;
+  font-weight: 900 !important;
+  margin-left: 70px;
+  margin-top: 60px;
+  padding-top: 50px;
 }
 
 .mainContent {
   display: flex;
-  gap: 40px;
-  flex: 1;
+  gap: 12px;
+  padding: 15px 30px 15px 70px;
+  margin-top: 0;
 }
 
-.profileCard {
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  padding: 30px;
-  width: 280px;
+.leftPanel {
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 25px 25px;
+  width: 320px;
   flex-shrink: 0;
-  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profileImageContainer {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  position: relative;
+  margin-bottom: 10px;
 }
 
-.profileImagePlaceholder {
+.profileImage {
   width: 150px;
   height: 150px;
-  border: 2px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  border: 3px solid #7a7a7a;
 }
 
-.placeholderX {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.line1, .line2 {
+.onlineIndicator {
   position: absolute;
-  width: 100%;
-  height: 2px;
-  background-color: #333;
-  top: 50%;
-  left: 0;
-}
-
-.line1 {
-  transform: rotate(45deg);
-  transform-origin: center;
-}
-
-.line2 {
-  transform: rotate(-45deg);
-  transform-origin: center;
-}
-
-.nameRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  bottom: 8px;
+  right: 8px;
+  width: 35px;
+  height: 35px;
+  background-color: #34c759;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
 }
 
 .userName {
-  font-size: 20px !important;
-  font-weight: 700 !important;
-  color: #333;
-}
-
-.editIcon {
-  font-size: 18px !important;
-  color: #666;
-  cursor: pointer;
-}
-
-.universityText {
+  color: #000000;
+  font-size: 24px !important;
+  font-weight: 900 !important;
   text-align: center;
-  font-size: 14px !important;
-  color: #0089F9 !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 10px !important;
 }
 
-.majorText {
+.schoolText {
+  color: #000000;
+  font-size: 11px !important;
   text-align: center;
-  font-size: 13px !important;
-  color: #666;
-  margin-bottom: 24px !important;
+  margin-bottom: 8px !important;
+  line-height: 1.4 !important;
 }
 
-.aboutSection {
-  margin-bottom: 24px;
+.degreesContainer {
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.aboutHeader {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.sectionTitle {
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  color: #333;
-}
-
-.editIconSmall {
-  font-size: 16px !important;
-  color: #666;
-  cursor: pointer;
-}
-
-.aboutText {
-  font-size: 13px !important;
-  color: #555;
+.degreeText {
+  color: #000000;
+  font-size: 11px !important;
   line-height: 1.5 !important;
 }
 
-.karmaSection {
-  margin-top: 16px;
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: #d9d9d9;
+  margin: 10px 0;
 }
 
-.karmaRow {
+.statsRow {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 5px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+}
+
+.statIcon {
+  font-size: 20px !important;
+  color: #979797;
+}
+
+.statText {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  color: #000000;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+.statLabel {
+  color: #7a7a7a;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+.aboutSection {
+  width: 100%;
   margin-top: 8px;
 }
 
-.starIcon {
-  font-size: 28px !important;
-  color: #FFD700;
-}
-
-.karmaPoints {
-  font-size: 22px !important;
+.aboutTitle {
+  color: #000000;
+  font-size: 12px !important;
   font-weight: 700 !important;
-  color: #333;
+  margin-bottom: 4px !important;
 }
 
-.coursesSection {
-  flex: 1;
+.aboutText {
+  color: #000000;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
 }
 
-.coursesCard {
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  padding: 24px;
-}
-
-.coursesTitle {
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  color: #333;
-  margin-bottom: 20px !important;
-}
-
-.courseCard {
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  padding: 16px;
-  transition: box-shadow 0.2s;
-}
-
-.courseCard:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.courseCode {
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  color: #333;
-  margin-bottom: 8px !important;
-}
-
-.instructorRow {
+.socialIcons {
   display: flex;
-  align-items: center;
-  margin-bottom: 4px;
+  gap: 8px;
+  margin-top: 15px;
+  align-self: flex-start;
 }
 
-.instructorIcon {
-  font-size: 16px !important;
-  color: #666;
-  margin-right: 6px;
-}
-
-.instructorText {
+.socialIcon {
   font-size: 13px !important;
-  color: #666;
-}
-
-.membersRow {
-  display: flex;
-  align-items: center;
-}
-
-.greenDot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: #4caf50;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.membersText {
-  font-size: 13px !important;
-  color: #666;
-}
-
-.mailPlaceholder {
-  width: 28px;
-  height: 28px;
-  border: 2px solid #333;
-  position: relative;
+  color: #7a7a7a;
   cursor: pointer;
 }
 
-.mailLine1, .mailLine2 {
+.middlePanel {
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 20px 25px;
+  flex: 1;
+  position: relative;
+  height: calc(100vh - 200px);
+  overflow-y: visible;
+}
+
+.editLink {
+  color: #0088f8;
+  font-size: 12px !important;
+  font-weight: 500 !important;
   position: absolute;
-  width: 141%;
-  height: 2px;
-  background-color: #333;
-  top: 50%;
-  left: 50%;
+  top: 20px;
+  right: 25px;
+  cursor: pointer;
 }
 
-.mailLine1 {
-  transform: translate(-50%, -50%) rotate(45deg);
+.formRow {
+  display: flex;
+  margin-bottom: 18px;
 }
 
-.mailLine2 {
-  transform: translate(-50%, -50%) rotate(-45deg);
+.formLabel {
+  color: #000000;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.formValue {
+  color: #000000;
+  font-size: 12px !important;
+}
+
+.formSection {
+  margin-bottom: 18px;
+}
+
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px 15px;
+  margin-left: 110px;
+  margin-top: -18px;
+}
+
+.preferredGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 110px;
+  margin-top: -10px;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.customCheckbox {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #7a7a7a;
+  border-radius: 2.5px;
+  background-color: #d9d9d9;
+  flex-shrink: 0;
+}
+
+.customCheckbox.checked {
+  background-color: #7a7a7a;
+}
+
+.checkboxLabel {
+  color: #000000;
+  font-size: 12px !important;
+}
+
+.roomsList {
+  margin-left: 110px;
+  margin-top: -18px;
+}
+
+.roomCategory {
+  border-bottom: 1px solid #d9d9d9;
+  padding: 6px 0;
+}
+
+.roomCategoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.roomCategoryName {
+  color: #000000;
+  font-size: 12px !important;
+}
+
+.expandIcon {
+  font-size: 14px !important;
+  color: #7a7a7a;
+}
+
+.roomItems {
+  margin-top: 6px;
+  margin-left: 8px;
+}
+
+.roomItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.countBadge {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #7a7a7a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #000000;
+  margin-left: auto;
+}
+
+.rightPanel {
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 20px;
+  width: 320px;
+  flex-shrink: 0;
+  height: calc(100vh - 200px);
+  overflow-y: visible;
+}
+
+.matchesHeader {
+  margin-bottom: 12px;
+}
+
+.matchesTitle {
+  color: #000000;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+.matchesSubtitle {
+  color: #7a7a7a;
+  font-size: 11px !important;
+}
+
+.matchesSearchRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.matchesSearch {
+  flex: 1;
+  background-color: #ffffff;
+}
+
+.matchesSearch fieldset {
+  border-radius: 10px;
+  border-color: #7a7a7a;
+}
+
+.matchesSearch input {
+  padding: 6px 10px !important;
+  font-size: 12px !important;
+}
+
+.searchIcon {
+  color: #7a7a7a;
+  font-size: 16px !important;
+}
+
+.inviteButton {
+  background-color: #0088f8;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 5px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.matchesList {
+  display: flex;
+  flex-direction: column;
+}
+
+.matchItem {
+  display: flex;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.matchAvatar {
+  width: 28px;
+  height: 28px;
+  background-color: #d9d9d9;
+  border: 2px solid #7a7a7a;
+  border-radius: 50%;
+  margin-right: 12px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.matchOnline {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  background-color: #34c759;
+  border: 1.5px solid #f5f5f5;
+  border-radius: 50%;
+}
+
+.matchInfo {
+  flex: 1;
+}
+
+.matchName {
+  color: #000000;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.matchDetails {
+  color: #7a7a7a;
+  font-size: 11px !important;
+}
+
+.addMatchIcon {
+  width: 20px;
+  height: 20px;
+  background-color: #7a7a7a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.plusIcon {
+  color: #d9d9d9;
+  font-size: 14px !important;
+}
+
+.invitedIcon {
+  width: 20px;
+  height: 20px;
+  background-color: #0088f8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkIcon {
+  color: white;
+  font-size: 12px !important;
+}
+
+.darkModeIcon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 24px !important;
+  color: #7a7a7a;
+  cursor: pointer;
 }
