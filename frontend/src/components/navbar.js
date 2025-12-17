@@ -19,19 +19,27 @@ import styles from './navbar.module.css'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
+import { useUnread } from './UnreadContext';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { totalUnreadCount } = useUnread();
+  
   return (
     <Box className={styles.navbarContainer}>
       <List className={styles.navList}>
         <ListItem>
           <Link href="/chat">
-            <ListItemIcon sx={{ minWidth: 'auto' }}>
+            <ListItemIcon sx={{ minWidth: 'auto' }} className={styles.iconWrapper}>
               {pathname === '/chat' ? (
                 <ChatFilledIcon className={`${styles.navIcon} ${styles.filledIcon}`} />
               ) : (
                 <ChatIcon className={`${styles.navIcon}`} />
+              )}
+              {totalUnreadCount > 0 && (
+                <span className={styles.unreadBadge}>
+                  {totalUnreadCount > 9 ? '9+' : totalUnreadCount}
+                </span>
               )}
             </ListItemIcon>
           </Link>
