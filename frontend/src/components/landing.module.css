@@ -13,6 +13,7 @@
   font-weight: 800 !important;
   line-height: 1;
   margin-bottom: 12px;
+  color: #0089F9 !important;
 }
 
 .taglineText {
@@ -91,8 +92,8 @@
 .joinButton {
   margin-top: 20px;
   padding: 6px 20px !important;
-  color: #000 !important;
-  border: 1px solid #000 !important;
+  color: #0089F9 !important;
+  border: 1px solid #0089F9 !important;
   border-radius: 8px !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
@@ -136,12 +137,16 @@
 .uploadButton {
   margin-left: 20px !important;
   padding: 4px 16px !important;
-  color: #000 !important;
-  border: 1px solid #000 !important;
+  color: #0089F9 !important;
+  border: 1px solid #0089F9 !important;
   border-radius: 8px !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
   cursor: pointer;
   transition: background-color 0.2s;
   text-transform: none !important;
+}
+
+.uploadIcon {
+  color: #0089F9 !important;
 }

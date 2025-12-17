@@ -1,6 +1,7 @@
 "use client"
 
 import Navbar from './navbar'
+import Popup from './Popup'
 import { useState, useEffect } from 'react'
 
 import {
@@ -23,6 +24,8 @@ import styles from './landing.module.css'
 export default function Landing() {
   const [classes, setClasses] = useState([]);
   const [search, setSearch] = useState('');
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupCourses, setPopupCourses] = useState([]);
   const router = useRouter();
   
   const filteredClasses = classes.filter(classItem =>
@@ -37,8 +40,8 @@ export default function Landing() {
       // Replace with actual data fetching logic
       const classData = [
         { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: true },
-        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: false },
-        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: false },
+        { code: "PHYSUN1494", title: 'Intro to Exp Phys-Lab', instructor: 'Giuseppina Cambareri', members: 42, joined: false },
+        { code: "PHYSUN2801", title: 'Accelerated Physics I', instructor: 'Yury Levin', members: 13, joined: false },
       ];
       setClasses(classData);
     }
@@ -75,7 +78,15 @@ export default function Landing() {
               },
             }}
           />
-          <Button className={styles.uploadButton}>
+          <Button className={styles.uploadButton} onClick={() => {
+            const icsCourses = [
+              { code: "PHYSUN1402", title: 'Intro Elec/Mag & Optcs', instructor: 'Allan Blaer (mes2253)', members: 50, joined: false },
+              { code: "MATHUN1102", title: 'Calculus II', instructor: 'Peter Woit (pgw2)', members: 21, joined: false },
+              { code: "APMAE2000", title: 'Multv. Calc. for Eng & Sc', instructor: 'Curtiss Lyman (cl4746)', members: 18, joined: false },
+            ];
+            setPopupCourses(icsCourses);
+            setPopupOpen(true);
+          }}>
             <UploadIcon className={styles.uploadIcon} />
             Upload from ICS
           </Button>
@@ -123,6 +134,11 @@ export default function Landing() {
           </Grid>
         }
       </Box>
+      <Popup 
+        open={popupOpen} 
+        onClose={() => setPopupOpen(false)}
+        courses={popupCourses}
+      />
     </>
   )
 }
