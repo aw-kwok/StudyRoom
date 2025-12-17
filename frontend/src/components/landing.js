@@ -40,8 +40,8 @@ export default function Landing() {
       // Replace with actual data fetching logic
       const classData = [
         { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: true },
-        { code: "PHYSUN1494", title: 'Intro to Exp Phys-Lab', instructor: 'Giuseppina Cambareri', members: 42, joined: false },
-        { code: "PHYSUN2801", title: 'Accelerated Physics I', instructor: 'Yury Levin', members: 13, joined: false },
+        { code: "PHYSUN1494", title: 'Intro to Exp Phys-Lab', instructor: 'Giuseppina Cambareri (gc2019)', members: 42, joined: false },
+        { code: "PHYSUN2801", title: 'Accelerated Physics I', instructor: 'Yury Levin (yl3470)', members: 13, joined: false },
       ];
       setClasses(classData);
     }
