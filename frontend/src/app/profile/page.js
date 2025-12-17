@@ -18,6 +18,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import styles from './profile.module.css'
 
@@ -116,10 +117,12 @@ export default function ProfilePage() {
     <Box className={styles.container}>
       <Navbar />
       
-      <Box className={styles.topBar}>
-        <Typography className={styles.logoText}>Study Room</Typography>
-        <LogoutIcon className={styles.logoutIcon} />
-      </Box>
+      <header className={styles.topHeader}>
+        <Link href="/" className={styles.logo}>Study Room</Link>
+        <button className={styles.logoutButton}>
+          <LogoutIcon />
+        </button>
+      </header>
 
       <Typography className={styles.pageTitle}>Profile</Typography>
 
