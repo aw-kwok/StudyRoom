@@ -35,25 +35,23 @@ export default function Popup({ open, onClose, courses = [] }) {
               {courses.map((course, index) => (
                 <Grid item size={12} key={index}>
                   <Box className={styles.courseCard}>
-                    <Box className={styles.courseContent}>
-                      <Typography className={styles.courseCode}>
-                        {course.code}
+                    <Typography className={styles.courseCode}>
+                      {course.code}
+                    </Typography>
+                    <Typography className={styles.courseTitle}>
+                      {course.title}
+                    </Typography>
+                    <Box className={styles.courseInstructor}>
+                      <InstructorIcon className={styles.instructorIcon} />
+                      <Typography className={styles.courseDescription}>
+                        {course.instructor}
                       </Typography>
-                      <Typography className={styles.courseTitle}>
-                        {course.title}
+                    </Box>
+                    <Box className={styles.courseMembersContainer}>
+                      <span className={styles.greenDot}></span>
+                      <Typography className={styles.courseMembers}>
+                        {course.members} Members
                       </Typography>
-                      <Box>
-                        <InstructorIcon className={styles.instructorIcon} />
-                        <Typography className={styles.courseDescription}>
-                          {course.instructor}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <span className={styles.greenDot}></span>
-                        <Typography className={styles.courseMembers}>
-                          {course.members} Members
-                        </Typography>
-                      </Box>
                     </Box>
                     <Button className={`${styles.joinButton} ${course.joined ? styles.joined : ''}`}>
                       {course.joined ? 
