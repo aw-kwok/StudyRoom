@@ -70,8 +70,6 @@ export default function Landing() {
       // ];
       const res = await axios.get(BACKEND_URL + '/api/classes');
       const classData = res.data.classes;
-
-      console.log(res.data)
       
       const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
       
@@ -131,11 +129,11 @@ export default function Landing() {
 
         { classes.length !== 0 &&
           <Grid container spacing={1.5} className={styles.classesGrid}>
-            <Grid item size={12}>
+            <Grid size={12}>
               <Typography className={styles.coursesFoundText}>{filteredClasses.length} courses found</Typography>
             </Grid>
             {filteredClasses.map((classItem, index) => (
-              <Grid item size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                 <Box className={styles.classCard}>
                   <Typography className={styles.classCode}>
                     {classItem.id}
