@@ -246,6 +246,35 @@ export default function ProfilePage() {
     setIsEditing(false);
   };
 
+  const handleInviteClick = async () => {
+    const url = 'http://localhost:3000/';
+    try {
+      await navigator.clipboard.writeText(url);
+      toast('Link copied', {
+        id: 'link-copied',
+        style: {
+          background: '#7a7a7a',
+          color: '#fff',
+          fontWeight: 500,
+        },
+        position: 'top-center',
+        duration: 1000,
+      });
+    } catch (err) {
+      console.error('Failed to copy link:', err);
+      toast('Failed to copy link', {
+        id: 'link-copy-error',
+        style: {
+          background: '#ffc107',
+          color: '#000',
+          fontWeight: 500,
+        },
+        position: 'top-center',
+        duration: 1000,
+      });
+    }
+  };
+
   const matches = [
     { name: 'Richard Roe', hobbies: 6, rooms: 3, online: true, hasMessage: true },
     { name: 'Tommy Atkins', hobbies: 2, rooms: 7, online: false, invited: true },
@@ -557,7 +586,7 @@ export default function ProfilePage() {
                 html: styles.matchesSearch
               }}
             />
-            <Box className={styles.inviteButton}>Invite</Box>
+            <Box className={styles.inviteButton} onClick={handleInviteClick}>Invite</Box>
           </Box>
 
           <Box className={styles.matchesList}>
