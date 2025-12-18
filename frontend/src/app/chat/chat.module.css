@@ -186,6 +186,15 @@
 .conversationList {
   flex: 1;
   overflow-y: auto;
+  /* Enable smooth scrolling */
+  scroll-behavior: smooth;
+  /* Optimize rendering */
+  will-change: contents;
+  transform: translateZ(0);
+  /* Use GPU acceleration */
+  -webkit-overflow-scrolling: touch;
+  /* Smooth list updates */
+  contain: layout style paint;
 }
 
 .conversationItem {
@@ -196,16 +205,56 @@
   border-left: 3px solid transparent;
   position: relative;
   border-bottom: 1px solid #e8e8e8;
+  /* Smooth transitions for all properties */
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Optimize rendering */
+  will-change: transform, opacity, background-color;
+  transform: translateZ(0);
+  /* Animation for appearance */
+  animation: fadeInSlide 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+  transform: translateY(-8px);
+  /* Prevent layout shifts */
+  contain: layout style;
+  /* Smooth hover effects */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes fadeInSlide {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .conversationItem:hover {
   background: #f5f5f5;
+  transform: translateX(2px) translateZ(0);
+  /* Smooth hover transition */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .conversationItemActive {
   background: #f0f7ff;
   border-left: 3px solid #0089f9;
+  transform: translateZ(0);
+  /* Smooth active state transition */
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Stagger animation for list items */
+.conversationItem:nth-child(1) { animation-delay: 0.01s; }
+.conversationItem:nth-child(2) { animation-delay: 0.02s; }
+.conversationItem:nth-child(3) { animation-delay: 0.03s; }
+.conversationItem:nth-child(4) { animation-delay: 0.04s; }
+.conversationItem:nth-child(5) { animation-delay: 0.05s; }
+.conversationItem:nth-child(6) { animation-delay: 0.06s; }
+.conversationItem:nth-child(7) { animation-delay: 0.07s; }
+.conversationItem:nth-child(8) { animation-delay: 0.08s; }
+.conversationItem:nth-child(9) { animation-delay: 0.09s; }
+.conversationItem:nth-child(10) { animation-delay: 0.10s; }
+.conversationItem:nth-child(n+11) { animation-delay: 0.11s; }
 
 .avatarWrapper {
   position: relative;
@@ -258,6 +307,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+  transition: font-weight 0.2s ease;
 }
 
 .conversationNameUnread {
@@ -267,6 +317,7 @@
 .conversationTime {
   font-size: 12px;
   color: #7B7B7B;
+  transition: color 0.2s ease;
 }
 
 .conversationMeta {
@@ -301,6 +352,22 @@
   align-items: center;
   justify-content: center;
   border: 2px solid #fff;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  animation: badgePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .conversationPreview {
@@ -309,6 +376,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.2s ease;
 }
 
 .conversationPreviewUnread {
@@ -475,7 +543,7 @@
 .messagesArea {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 20px 10px 20px 20px;
   display: flex;
   flex-direction: column-reverse;
 }
@@ -486,15 +554,19 @@
 }
 
 .message {
-  margin-bottom: 35px;
+  margin-bottom: 12px;
 }
 
 .messageContinuation {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 .messageSent {
   margin-bottom: 8px;
+}
+
+.message:last-child {
+  margin-bottom: 0;
 }
 
 .messageReceived {
@@ -549,10 +621,6 @@
 
 .avatarDot.away {
   background: #E5A000;
-}
-
-.messageContent {
-  /* padding-left: 0; */
 }
 
 .messageContentIndented {
@@ -616,6 +684,14 @@
   flex-shrink: 0;
   opacity: 0;
   transition: opacity 0.2s ease;
+  width: 0;
+  overflow: hidden;
+}
+
+.messageRow:hover .messageActions,
+.messageRowIndented:hover .messageActions,
+.messageActionsVisible {
+  width: auto;
 }
 
 .messageRow:hover .messageActions,
@@ -735,15 +811,20 @@
   flex-direction: column;
   align-items: flex-end;
   margin-left: auto;
-  max-width: 60%;
+  margin-right: 0;
+  max-width: 75%;
+  width: fit-content;
 }
 
 .messageSent .messageContent {
-  width: 100%;
+  width: fit-content;
 }
 
 .messageSent .messageRow {
   flex-direction: row-reverse;
+  width: fit-content;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .messageSent .messageText {
@@ -751,6 +832,9 @@
   padding: 15px 18px;
   border-radius: 20px 20px 0 20px;
   text-align: left;
+  width: fit-content;
+  max-width: 100%;
+  flex: 0 1 auto;
 }
 
 /* No messages placeholder */
@@ -772,6 +856,27 @@
   font-size: 14px !important;
   color: #aaa;
   margin-top: 5px !important;
+}
+
+/* Loading message */
+.loadingMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+  font-size: 16px;
+}
+
+/* Empty chat list */
+.emptyChatList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #888;
+  font-size: 16px;
+  text-align: center;
 }
 
 /* Message Input */

@@ -1,7 +1,7 @@
 "use client"
 
 import Navbar from '../../components/navbar'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Box,
@@ -17,7 +17,6 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import AddIcon from '@mui/icons-material/Add'
 import CheckIcon from '@mui/icons-material/Check'
-import DarkModeIcon from '@mui/icons-material/DarkModeOutlined'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
 import GridViewIcon from '@mui/icons-material/GridView'
@@ -26,25 +25,36 @@ import Link from 'next/link'
 
 import styles from './profile.module.css'
 
+const API_BASE_URL = 'http://localhost:4000/api';
+
 export default function ProfilePage() {
   const router = useRouter()
   const [search, setSearch] = useState('')
   const [isEditing, setIsEditing] = useState(false)
+  const [invitedUsers, setInvitedUsers] = useState({})
+  const [inviteTimestamps, setInviteTimestamps] = useState({}) // For spam protection
+  const [userStatuses, setUserStatuses] = useState({}) // Store userStatus for each match
 
-  const user = {
-    name: 'John Doe',
-    school: 'The Fu Foundation School of Engineering and Applied Science, Columbia University',
-    degrees: [
-      'Computer Science, BS (2025)',
-      'Industrial Engineering, MSIE (2027)'
-    ],
-    karma: '1,250',
-    rooms: 16,
-    year: 'Sophomore',
-    about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-  }
+  // Calculate year based on graduation year
+  const calculateYear = (graduationYear) => {
+    const currentYear = new Date().getFullYear();
+    const yearsUntilGraduation = graduationYear - currentYear;
+    
+    if (yearsUntilGraduation >= 4) {
+      return 'Freshman';
+    } else if (yearsUntilGraduation === 3) {
+      return 'Sophomore';
+    } else if (yearsUntilGraduation === 2) {
+      return 'Junior';
+    } else if (yearsUntilGraduation === 1) {
+      return 'Senior';
+    } else {
+      return 'Graduate';
+    }
+  };
 
-  const [skills, setSkills] = useState({
+  // Default values (used for SSR and initial client render)
+  const defaultSkills = {
     typescript: false,
     javascript: false,
     python: false,
@@ -57,16 +67,16 @@ export default function ProfilePage() {
     htmlCss: false,
     swiftUI: false,
     django: false,
-  });
-  
-  const [preferredMethod, setPreferredMethod] = useState({
+  };
+
+  const defaultPreferredMethod = {
     online: false,
     synchronous: false,
     asynchronous: false,
     hybrid: false,
-  });
-  
-  const [hobbies, setHobbies] = useState({
+  };
+
+  const defaultHobbies = {
     design: false,
     travelling: false,
     collecting: false,
@@ -79,9 +89,9 @@ export default function ProfilePage() {
     sports: false,
     music: false,
     gaming: false,
-  });
+  };
 
-  const [rooms, setRooms] = useState({
+  const defaultRooms = {
     mathematics: { expanded: false, courses: [] },
     physics: { expanded: false, courses: [] },
     chemistryBiology: { expanded: false, courses: [] },
@@ -91,7 +101,53 @@ export default function ProfilePage() {
     computerScience: { expanded: false, courses: [] },
     artOfEngineering: { expanded: false, courses: [] },
     required: { expanded: false, courses: [] },
-  });
+  };
+
+  // Initialize state - use defaults for SSR, then load from localStorage on client
+  const [graduationYear, setGraduationYear] = useState(2029);
+  const [skills, setSkills] = useState(defaultSkills);
+  const [preferredMethod, setPreferredMethod] = useState(defaultPreferredMethod);
+  const [hobbies, setHobbies] = useState(defaultHobbies);
+  const [rooms, setRooms] = useState(defaultRooms);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Load profile data from localStorage after hydration
+  useEffect(() => {
+    const storedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+    
+    if (storedProfile.graduationYear) {
+      setGraduationYear(storedProfile.graduationYear);
+    }
+    if (storedProfile.skills) {
+      setSkills(storedProfile.skills);
+    }
+    if (storedProfile.preferredMethod) {
+      setPreferredMethod(storedProfile.preferredMethod);
+    }
+    if (storedProfile.hobbies) {
+      setHobbies(storedProfile.hobbies);
+    }
+    if (storedProfile.rooms) {
+      setRooms(storedProfile.rooms);
+    }
+    setIsHydrated(true);
+  }, []);
+
+  // Calculate current year display value - always use default (2028) during SSR/initial render to avoid hydration mismatch
+  // After hydration, use the actual graduationYear from state
+  const currentYearDisplay = calculateYear(isHydrated ? graduationYear : 2029);
+
+  const user = {
+    name: 'John Doe',
+    school: 'The Fu Foundation School of Engineering and Applied Science, Columbia University',
+    degrees: [
+      'Computer Science, BS (2025)',
+      'Industrial Engineering, MSIE (2027)'
+    ],
+    karma: '1,250',
+    rooms: 16,
+    about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+  }
 
   // Courses by subject
   const coursesBySubject = {
@@ -191,10 +247,14 @@ export default function ProfilePage() {
       const newCourses = currentCourses.includes(course)
         ? currentCourses.filter(c => c !== course)
         : [...currentCourses, course];
-      return {
+      const updated = {
         ...prev,
         [roomKey]: { ...prev[roomKey], courses: newCourses }
       };
+      // Auto-save to localStorage
+      const profileData = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      localStorage.setItem('userProfile', JSON.stringify({ ...profileData, rooms: updated }));
+      return updated;
     });
   };
 
@@ -217,7 +277,13 @@ export default function ProfilePage() {
       showEditWarning();
       return;
     }
-    setSkills(prev => ({ ...prev, [skill]: !prev[skill] }));
+    setSkills(prev => {
+      const updated = { ...prev, [skill]: !prev[skill] };
+      // Auto-save to localStorage
+      const profileData = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      localStorage.setItem('userProfile', JSON.stringify({ ...profileData, skills: updated }));
+      return updated;
+    });
   };
 
   const handleMethodChange = (method) => {
@@ -225,7 +291,13 @@ export default function ProfilePage() {
       showEditWarning();
       return;
     }
-    setPreferredMethod(prev => ({ ...prev, [method]: !prev[method] }));
+    setPreferredMethod(prev => {
+      const updated = { ...prev, [method]: !prev[method] };
+      // Auto-save to localStorage
+      const profileData = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      localStorage.setItem('userProfile', JSON.stringify({ ...profileData, preferredMethod: updated }));
+      return updated;
+    });
   };
 
   const handleHobbyChange = (hobby) => {
@@ -233,7 +305,13 @@ export default function ProfilePage() {
       showEditWarning();
       return;
     }
-    setHobbies(prev => ({ ...prev, [hobby]: !prev[hobby] }));
+    setHobbies(prev => {
+      const updated = { ...prev, [hobby]: !prev[hobby] };
+      // Auto-save to localStorage
+      const profileData = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      localStorage.setItem('userProfile', JSON.stringify({ ...profileData, hobbies: updated }));
+      return updated;
+    });
   };
 
   const handleEditClick = () => {
@@ -241,9 +319,40 @@ export default function ProfilePage() {
   };
 
   const handleSaveClick = () => {
-    // Save changes here (you can add API call or state management)
-    console.log('Saving changes:', { skills, preferredMethod, hobbies, rooms });
+    // Save all profile changes to localStorage
+    const profileData = {
+      graduationYear,
+      skills,
+      preferredMethod,
+      hobbies,
+      rooms
+    };
+    localStorage.setItem('userProfile', JSON.stringify(profileData));
     setIsEditing(false);
+    toast('Profile saved', {
+      id: 'profile-saved',
+      style: {
+        background: '#34c759',
+        color: '#fff',
+        fontWeight: 500,
+      },
+      position: 'top-center',
+      duration: 1500,
+    });
+  };
+
+  const handleGraduationYearChange = (e) => {
+    if (!isEditing) {
+      showEditWarning();
+      return;
+    }
+    const year = parseInt(e.target.value);
+    if (!isNaN(year) && year >= 2020 && year <= 2030) {
+      setGraduationYear(year);
+      // Auto-save to localStorage
+      const profileData = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      localStorage.setItem('userProfile', JSON.stringify({ ...profileData, graduationYear: year }));
+    }
   };
 
   const handleInviteClick = async () => {
@@ -275,21 +384,135 @@ export default function ProfilePage() {
     }
   };
 
+  // Load invited users from localStorage on mount
+  useEffect(() => {
+    const storedInvited = JSON.parse(localStorage.getItem('invitedUsers') || '{}');
+    setInvitedUsers(storedInvited);
+    
+    // Fetch userStatus for invited users from their DM conversations
+    const invitedUsernames = Object.keys(storedInvited).filter(name => storedInvited[name]);
+    invitedUsernames.forEach(async (username) => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/chats/dm/${encodeURIComponent(username)}`);
+        if (response.ok) {
+          const data = await response.json();
+          const userStatus = data.chat?.userStatus || 'offline';
+          setUserStatuses(prev => ({ ...prev, [username]: userStatus }));
+        }
+      } catch (error) {
+        console.error(`Error fetching status for ${username}:`, error);
+      }
+    });
+  }, []);
+
   const matches = [
-    { name: 'Richard Roe', hobbies: 6, rooms: 3, online: true, hasMessage: true },
-    { name: 'Tommy Atkins', hobbies: 2, rooms: 7, online: false, invited: true },
-    { name: 'Jane Bloggs', hobbies: 9, rooms: 5, online: true, invited: true },
-    { name: 'Joe Bloggs', hobbies: 3, rooms: 3, online: false },
-    { name: 'Alan Smithee', hobbies: 2, rooms: 3, online: false },
-    { name: 'Joe Shmoe', hobbies: 6, rooms: 4, online: false },
-    { name: 'Fred Bloggs', hobbies: 7, rooms: 2, online: false },
-    { name: 'Alan Smithee', hobbies: 8, rooms: 2, online: false },
+    { name: 'Richard Roe', hobbies: 6, rooms: 3, hasMessage: true },
+    { name: 'Tommy Atkins', hobbies: 2, rooms: 7 },
+    { name: 'Jane Bloggs', hobbies: 9, rooms: 5 },
+    { name: 'Joe Bloggs', hobbies: 3, rooms: 3 },
+    { name: 'Alan Smithee', hobbies: 2, rooms: 3 },
+    { name: 'Joe Shmoe', hobbies: 6, rooms: 4 },
+    { name: 'Fred Bloggs', hobbies: 7, rooms: 2 },
+    { name: 'Toby Smithee', hobbies: 8, rooms: 2 },
   ]
 
-  const filteredMatches = matches.filter(
+  const filteredMatches = matches.map(match => {
+    const invited = invitedUsers[match.name] || false;
+    const userStatus = userStatuses[match.name] || null;
+    // Show status indicator for all invited users (online, away, or offline)
+    const showStatusDot = invited && userStatus !== null;
+    
+    return {
+      ...match,
+      invited,
+      userStatus,
+      showStatusDot
+    };
+  }).filter(
     match =>
       match.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleInviteToggle = async (userName) => {
+    // Spam protection: prevent rapid toggling (minimum 1 second between actions)
+    const now = Date.now();
+    const lastAction = inviteTimestamps[userName] || 0;
+    if (now - lastAction < 1000) {
+      toast('Please wait a moment before toggling again', {
+        id: 'spam-protection',
+        style: {
+          background: '#ffc107',
+          color: '#000',
+          fontWeight: 500,
+        },
+        position: 'top-center',
+        duration: 1000,
+      });
+      return;
+    }
+
+    setInviteTimestamps(prev => ({ ...prev, [userName]: now }));
+
+    const isCurrentlyInvited = invitedUsers[userName] || false;
+    const newInvitedState = !isCurrentlyInvited;
+
+    // Update local state immediately
+    const updatedInvited = { ...invitedUsers, [userName]: newInvitedState };
+    setInvitedUsers(updatedInvited);
+    localStorage.setItem('invitedUsers', JSON.stringify(updatedInvited));
+
+    try {
+      // Update backend: find user document and set invited status
+      const response = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(userName)}/invite`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ invited: newInvitedState })
+      });
+
+      if (!response.ok) {
+        // Revert on error
+        setInvitedUsers(invitedUsers);
+        localStorage.setItem('invitedUsers', JSON.stringify(invitedUsers));
+        throw new Error('Failed to update invite status');
+      }
+
+      // If inviting, fetch the DM conversation to get userStatus and navigate to chat
+      if (newInvitedState) {
+        try {
+          const dmResponse = await fetch(`${API_BASE_URL}/chats/dm/${encodeURIComponent(userName)}`);
+          if (dmResponse.ok) {
+            const dmData = await dmResponse.json();
+            const userStatus = dmData.chat?.userStatus || 'offline';
+            setUserStatuses(prev => ({ ...prev, [userName]: userStatus }));
+          }
+        } catch (error) {
+          console.error(`Error fetching DM status for ${userName}:`, error);
+        }
+        router.push(`/chat?dm=${encodeURIComponent(userName)}`);
+      } else {
+        // Remove status when uninviting
+        setUserStatuses(prev => {
+          const updated = { ...prev };
+          delete updated[userName];
+          return updated;
+        });
+      }
+    } catch (error) {
+      console.error('Error toggling invite:', error);
+      toast('Failed to update invite status', {
+        id: 'invite-error',
+        style: {
+          background: '#ffc107',
+          color: '#000',
+          fontWeight: 500,
+        },
+        position: 'top-center',
+        duration: 2000,
+      });
+    }
+  };
 
   return (
     <Box className={styles.container}>
@@ -349,7 +572,7 @@ export default function ProfilePage() {
             <Box className={styles.statItem}>
               <MenuBookIcon className={styles.statIcon} />
               <Box className={styles.statText}>
-                <Typography className={styles.statValue}>{user.year}</Typography>
+                <Typography className={styles.statValue} suppressHydrationWarning>{currentYearDisplay}</Typography>
                 <Typography className={styles.statLabel}>Year</Typography>
               </Box>
             </Box>
@@ -380,7 +603,26 @@ export default function ProfilePage() {
 
           <Box className={styles.formRow}>
             <Typography className={styles.formLabel}>Graduating year</Typography>
-            <Typography className={styles.formValue}>2028</Typography>
+            {isEditing ? (
+              <input
+                type="number"
+                value={graduationYear}
+                onChange={handleGraduationYearChange}
+                min="2020"
+                max="2030"
+                className={styles.graduationYearInput}
+                style={{
+                  width: '80px',
+                  padding: '4px 8px',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  outline: 'none'
+                }}
+              />
+            ) : (
+              <Typography className={styles.formValue}>{graduationYear}</Typography>
+            )}
           </Box>
 
           <Box className={styles.formSection}>
@@ -593,7 +835,17 @@ export default function ProfilePage() {
             {filteredMatches.map((match, i) => (
               <Box key={i} className={styles.matchItem}>
                 <Box className={styles.matchAvatar}>
-                  {match.online && <Box className={styles.matchOnline}></Box>}
+                  {match.showStatusDot && (
+                    <Box 
+                      className={
+                        match.userStatus === 'online' 
+                          ? styles.matchOnline 
+                          : match.userStatus === 'away'
+                          ? styles.matchAway
+                          : styles.matchOffline
+                      }
+                    ></Box>
+                  )}
                 </Box>
                 <Box className={styles.matchInfo}>
                   <Typography className={styles.matchName}>{match.name}</Typography>
@@ -602,11 +854,19 @@ export default function ProfilePage() {
                   </Typography>
                 </Box>
                 {match.invited ? (
-                  <Box className={styles.invitedIcon}>
+                  <Box 
+                    className={styles.invitedIcon}
+                    onClick={() => handleInviteToggle(match.name)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <CheckIcon className={styles.checkIcon} />
                   </Box>
                 ) : (
-                  <Box className={styles.addMatchIcon}>
+                  <Box 
+                    className={styles.addMatchIcon}
+                    onClick={() => handleInviteToggle(match.name)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <AddIcon className={styles.plusIcon} />
                   </Box>
                 )}

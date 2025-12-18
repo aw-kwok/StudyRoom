@@ -2,8 +2,8 @@
 
 import { createContext, useContext, useState } from 'react';
 
-// Initial unread count: Machine Learning(1) + Intro to Python(3) + Discrete Math(1) + Fundamentals(2) = 7
-const INITIAL_UNREAD = 7;
+// Initial unread count: Start with 0, will be updated based on actual unread messages
+const INITIAL_UNREAD = 0;
 
 const UnreadContext = createContext({
   totalUnreadCount: INITIAL_UNREAD,

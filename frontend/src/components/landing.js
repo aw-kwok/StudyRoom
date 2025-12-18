@@ -88,25 +88,37 @@ export default function Landing() {
     e.target.value = ''; // reset input so same file can be uploaded again
   };
 
-  const handleJoinClick = (classCode, redirect = true) => {
+  const handleJoinClick = async (classCode, redirect = true) => {
+    const classItem = classes.find(c => c.id === classCode);
+    if (!classItem) return;
+    
+    const newJoinedState = !classItem.joined;
+    
+    if (newJoinedState) {
+      // Create chat when joining a course
+      try {
+        await axios.post(BACKEND_URL + `/api/chats/class/${classCode}/join`);
+      } catch (error) {
+        console.error('Error creating chat:', error);
+      }
+      
+      const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
+      joinedCourses[classCode] = true;
+      localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
+      
+      if (redirect) router.push('/chat?class=' + classCode);
+    } else {
+      const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
+      delete joinedCourses[classCode];
+      localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
+    }
+    
     setClasses(prevClasses => {
-      const updatedClasses = prevClasses.map(classItem => {
-        if (classItem.id === classCode) {
-          const newJoinedState = !classItem.joined;
-          const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
-          
-          if (newJoinedState) {
-            joinedCourses[classCode] = true;
-            localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
-            if (redirect) router.push('/chat?class=' + classCode);
-          } else {
-            delete joinedCourses[classCode];
-            localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
-          }
-          
-          return { ...classItem, joined: newJoinedState };
+      const updatedClasses = prevClasses.map(item => {
+        if (item.id === classCode) {
+          return { ...item, joined: newJoinedState };
         }
-        return classItem;
+        return item;
       });
       setPopupCourses(popupCourses.map(course => {
         const updated = updatedClasses.find(c => c.id === course.code);
