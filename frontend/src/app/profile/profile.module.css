@@ -427,6 +427,7 @@
 .matchesSearch {
   flex: 1;
   background-color: #ffffff;
+  border-radius: 10px;
 }
 
 .matchesSearch fieldset {
@@ -435,7 +436,7 @@
 }
 
 .matchesSearch input {
-  padding: 6px 10px !important;
+  padding: 6px 0px !important;
   font-size: 12px !important;
 }
 

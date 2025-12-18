@@ -550,6 +550,7 @@ export default function ProfilePage() {
                     </InputAdornment>
                   ),
                 },
+                html: styles.matchesSearch
               }}
             />
             <Box className={styles.inviteButton}>Invite</Box>
