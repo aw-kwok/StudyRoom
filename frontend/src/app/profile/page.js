@@ -276,7 +276,7 @@ export default function ProfilePage() {
       <Navbar />
       
       <header className={styles.topHeader}>
-        <Link href="/" className={styles.logo}>Study Room</Link>
+        <Link href="/" className={styles.logo}>StudyRoom</Link>
         <button className={styles.logoutButton} onClick={() => router.push('/signin')}>
           <LogoutIcon />
         </button>
@@ -351,7 +351,7 @@ export default function ProfilePage() {
 
           <Box className={styles.formRow}>
             <Typography className={styles.formLabel}>Graduating year</Typography>
-            <Typography className={styles.formValue}>2025</Typography>
+            <Typography className={styles.formValue}>2028</Typography>
           </Box>
 
           <Box className={styles.formSection}>
@@ -502,7 +502,6 @@ export default function ProfilePage() {
                   <Box 
                     className={styles.roomCategoryHeader} 
                     onClick={() => toggleRoom(key)}
-                    style={{ cursor: 'pointer' }}
                   >
                     <Typography className={styles.roomCategoryName}>{label}</Typography>
                     <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

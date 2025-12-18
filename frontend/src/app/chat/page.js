@@ -471,7 +471,7 @@ function ChatContent() {
     <div className={styles.pageWrapper}>
       {/* Top Header */}
       <header className={styles.topHeader}>
-        <Link href="/" className={styles.logo}>Study Room</Link>
+        <Link href="/" className={styles.logo}>StudyRoom</Link>
         <button className={styles.logoutButton} onClick={() => router.push('/signin')}>
           <LogoutIcon />
         </button>
