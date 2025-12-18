@@ -2,6 +2,7 @@
 
 import Navbar from '../../components/navbar'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   Box,
   Typography,
@@ -17,17 +18,16 @@ import AddIcon from '@mui/icons-material/Add'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined'
-import Image from 'next/image'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
+import GridViewIcon from '@mui/icons-material/GridView'
+import LinkIcon from '@mui/icons-material/Link'
 import Link from 'next/link'
 
 import styles from './profile.module.css'
 
-import CupIcon from './cup.svg'
-import AppsWidgetIcon from './apps-widget add.svg'
-import OpenBookIcon from './solid.svg'
-import LinkSvgIcon from './Link.svg'
-
 export default function ProfilePage() {
+  const router = useRouter()
   const [search, setSearch] = useState('')
 
   const user = {
@@ -119,7 +119,7 @@ export default function ProfilePage() {
       
       <header className={styles.topHeader}>
         <Link href="/" className={styles.logo}>Study Room</Link>
-        <button className={styles.logoutButton}>
+        <button className={styles.logoutButton} onClick={() => router.push('/signin')}>
           <LogoutIcon />
         </button>
       </header>
@@ -146,21 +146,21 @@ export default function ProfilePage() {
 
           <Box className={styles.statsRow}>
             <Box className={styles.statItem}>
-              <Image src={CupIcon} alt="Karma" width={20} height={20} className={styles.statIcon} />
+              <EmojiEventsIcon className={styles.statIcon} />
               <Box className={styles.statText}>
                 <Typography className={styles.statValue}>{user.karma}</Typography>
                 <Typography className={styles.statLabel}>Karma</Typography>
               </Box>
             </Box>
             <Box className={styles.statItem}>
-              <Image src={AppsWidgetIcon} alt="Rooms" width={20} height={20} className={styles.statIcon} />
+              <GridViewIcon className={styles.statIcon} />
               <Box className={styles.statText}>
                 <Typography className={styles.statValue}>{user.rooms}</Typography>
                 <Typography className={styles.statLabel}>Rooms</Typography>
               </Box>
             </Box>
             <Box className={styles.statItem}>
-              <Image src={OpenBookIcon} alt="Year" width={20} height={20} className={styles.statIcon} />
+              <MenuBookIcon className={styles.statIcon} />
               <Box className={styles.statText}>
                 <Typography className={styles.statValue}>{user.year}</Typography>
                 <Typography className={styles.statLabel}>Year</Typography>
@@ -178,7 +178,7 @@ export default function ProfilePage() {
           <Box className={styles.socialIcons}>
             <InstagramIcon className={styles.socialIcon} />
             <TwitterIcon className={styles.socialIcon} />
-            <Image src={LinkSvgIcon} alt="Link" width={13} height={13} className={styles.socialIcon} />
+            <LinkIcon className={styles.socialIcon} />
           </Box>
         </Box>
 

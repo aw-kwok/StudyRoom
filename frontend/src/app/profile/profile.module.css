@@ -2,7 +2,11 @@
   background-color: #ffffff;
   min-height: 100vh;
   position: relative;
-  font-family: "Hanken Grotesk-Bold", Helvetica;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.container * {
+  font-family: inherit !important;
 }
 
 .topHeader {

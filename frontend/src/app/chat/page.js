@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Navbar from '../../components/navbar';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PersonIcon from '@mui/icons-material/Person';
@@ -23,7 +23,7 @@ import { useUnread } from '../../components/UnreadContext';
 // Sample conversation data
 const initialConversations = [
   { id: 1, name: 'John Smith', preview: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', time: '17:19', isGroup: false, userStatus: 'online' },
-  { id: 2, name: 'User Interface Design', preview: 'Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore...', time: 'Yesterday', isGroup: true, code: 'COMS4170', onlineCount: 18 },
+  { id: 2, name: 'User Interface Design', preview: 'Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore...', time: 'Yesterday', isGroup: true, code: 'COMS4170', onlineCount: 83 },
   { id: 3, name: 'Machine Learning', preview: 'John Smith: Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse...', time: 'Sunday', isGroup: true, code: 'COMS4771W', unread: true, unreadCount: 1, onlineCount: 45 },
   { id: 4, name: 'Artificial Intelligence', preview: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore...', time: 'Friday', isGroup: true, code: 'COMS4701W', onlineCount: 67 },
   { id: 5, name: 'Intro to Python', preview: 'John Smith: Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit...', time: 'Wednesday', isGroup: true, code: 'AUPL6845O', unread: true, unreadCount: 3, onlineCount: 124 },
@@ -332,6 +332,7 @@ const emojis = ['😀', '😂', '😍', '🥳', '👍', '👋', '🎉', '❤️'
 
 function ChatContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [selectedChat, setSelectedChat] = useState(2);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageInput, setMessageInput] = useState('');
@@ -471,7 +472,7 @@ function ChatContent() {
       {/* Top Header */}
       <header className={styles.topHeader}>
         <Link href="/" className={styles.logo}>Study Room</Link>
-        <button className={styles.logoutButton}>
+        <button className={styles.logoutButton} onClick={() => router.push('/signin')}>
           <LogoutIcon />
         </button>
       </header>
