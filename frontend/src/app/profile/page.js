@@ -587,8 +587,6 @@ export default function ProfilePage() {
           </Box>
         </Box>
       </Box>
-
-      <DarkModeIcon className={styles.darkModeIcon} />
     </Box>
   )
 }
