@@ -2,7 +2,7 @@
 
 import Navbar from './navbar'
 import Popup from './Popup'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import {
   Box,
@@ -30,6 +30,8 @@ export default function Landing() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupCourses, setPopupCourses] = useState([]);
   const router = useRouter();
+
+  const fileInputRef = useRef(null);
   
   const filteredClasses = classes.filter(classItem =>
     classItem.id.toLowerCase().includes(search.toLowerCase()) ||
@@ -37,7 +39,56 @@ export default function Landing() {
     classItem.instructor.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleJoinClick = (classCode) => {
+  const extractUniqueCourseCodesAndNames = (icsText) => {
+    const summaryLines = icsText.match(/^SUMMARY:(.+)$/gm);
+    if (!summaryLines) return [];
+
+    const courseMap = new Map();
+    summaryLines.forEach(line => {
+      const parts = line.replace('SUMMARY:', '').split('•').map(s => s.trim());
+      if (parts.length >= 2) {
+        const code = parts[0];
+        const courseName = parts[parts.length - 1];
+        courseMap.set(code, courseName);
+      }
+    });
+
+    // Return as array of objects: [{ code, title }]
+    return Array.from(courseMap.entries()).map(([code, courseName]) => ({ code, courseName }));
+  }
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const text = await file.text();
+    const courses = extractUniqueCourseCodesAndNames(text);
+
+    console.log(courses)
+
+    const foundCourses = [];
+    for (const course of courses) {
+      if (classes.some(c => c.course_name.toLowerCase() === course.courseName.toLowerCase())) {
+        foundCourses.push({
+          code: classes.find(c => c.course_name.toLowerCase() === course.courseName.toLowerCase()).id,
+          title: classes.find(c => c.course_name.toLowerCase() === course.courseName.toLowerCase()).course_name,
+          instructor: classes.find(c => c.course_name.toLowerCase() === course.courseName.toLowerCase()).instructor,
+          members: classes.find(c => c.course_name.toLowerCase() === course.courseName.toLowerCase()).members,
+          joined: classes.find(c => c.course_name.toLowerCase() === course.courseName.toLowerCase()).joined
+        });
+      }
+    }
+    console.log(foundCourses);
+    setPopupCourses(foundCourses);
+    setPopupOpen(true);
+    e.target.value = ''; // reset input so same file can be uploaded again
+  };
+
+  const handleJoinClick = (classCode, redirect = true) => {
     setClasses(prevClasses => {
       const updatedClasses = prevClasses.map(classItem => {
         if (classItem.id === classCode) {
@@ -47,7 +98,7 @@ export default function Landing() {
           if (newJoinedState) {
             joinedCourses[classCode] = true;
             localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
-            router.push('/chat?class=' + classCode);
+            if (redirect) router.push('/chat?class=' + classCode);
           } else {
             delete joinedCourses[classCode];
             localStorage.setItem('joinedCourses', JSON.stringify(joinedCourses));
@@ -57,6 +108,10 @@ export default function Landing() {
         }
         return classItem;
       });
+      setPopupCourses(popupCourses.map(course => {
+        const updated = updatedClasses.find(c => c.id === course.code);
+        return updated ? { ...course, joined: updated.joined } : course;
+      }));
       return updatedClasses;
     });
   };
@@ -113,18 +168,17 @@ export default function Landing() {
               },
             }}
           />
-          <Button className={styles.uploadButton} onClick={() => {
-            const icsCourses = [
-              { code: "PHYSUN1402", title: 'Intro Elec/Mag & Optcs', instructor: 'Allan Blaer (mes2253)', members: 50, joined: false },
-              { code: "MATHUN1102", title: 'Calculus II', instructor: 'Peter Woit (pgw2)', members: 21, joined: false },
-              { code: "APMAE2000", title: 'Multv. Calc. for Eng & Sc', instructor: 'Curtiss Lyman (cl4746)', members: 18, joined: false },
-            ];
-            setPopupCourses(icsCourses);
-            setPopupOpen(true);
-          }}>
+          <Button className={styles.uploadButton} onClick={handleUploadClick}> 
             <UploadIcon className={styles.uploadIcon} />
             Upload from ICS
           </Button>
+          <input
+            type="file"
+            accept=".ics"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
         </Box>
 
         { classes.length !== 0 &&
@@ -173,6 +227,7 @@ export default function Landing() {
         open={popupOpen} 
         onClose={() => setPopupOpen(false)}
         courses={popupCourses}
+        handleJoinClick={handleJoinClick}
       />
     </>
   )

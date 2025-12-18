@@ -152,6 +152,12 @@
   white-space: nowrap;
 }
 
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  flex: 0.5;
+}
+
 .joinButton {
   padding: 6px 20px !important;
   color: #0089F9 !important;

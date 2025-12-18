@@ -14,7 +14,7 @@ import CheckmarkIcon from '@mui/icons-material/CheckTwoTone';
 import CloseIcon from '@mui/icons-material/Close';
 import styles from './Popup.module.css'
 
-export default function Popup({ open, onClose, courses = [] }) {
+export default function Popup({ open, onClose, courses = [], handleJoinClick }) {
   if (!open) return null;
 
   return (
@@ -53,16 +53,18 @@ export default function Popup({ open, onClose, courses = [] }) {
                         {course.members} Members
                       </Typography>
                     </Box>
-                    <Button className={`${styles.joinButton} ${course.joined ? styles.joined : ''}`}>
-                      {course.joined ? 
-                        <>
-                          <CheckmarkIcon className={styles.checkmark} />
-                          Joined
-                        </>
-                        :
-                        'Join'
-                      }
-                    </Button>
+                    <Box className={styles.buttonWrapper}>
+                      <Button className={`${styles.joinButton} ${course.joined ? styles.joined : ''}`} onClick={(() => {handleJoinClick(course.code, false)})}>
+                        {course.joined ? 
+                          <>
+                            <CheckmarkIcon className={styles.checkmark} />
+                            Joined
+                          </>
+                          :
+                          'Join'
+                        }
+                      </Button>
+                    </Box>
                   </Box>
                 </Grid>
               ))}
