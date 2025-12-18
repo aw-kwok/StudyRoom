@@ -203,6 +203,11 @@
   position: relative;
   height: calc(100vh - 200px);
   overflow-y: visible;
+  transition: background-color 0.3s ease;
+}
+
+.middlePanel.editing {
+  background-color: #e0e0e0;
 }
 
 .editLink {
@@ -241,7 +246,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px 15px;
-  margin-left: 110px;
+  margin-left: 120px;
   margin-top: -18px;
 }
 
@@ -249,7 +254,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-left: 110px;
+  margin-left: 120px;
   margin-top: -10px;
 }
 
@@ -277,8 +282,42 @@
   font-size: 12px !important;
 }
 
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.checkbox:checked {
+  background: #0089F9;
+  border-color: #0089F9;
+}
+
+.checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  color: white;
+  font-weight: bold;
+}
+
+.checkbox:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .roomsList {
-  margin-left: 110px;
+  margin-left: 120px;
   margin-top: -18px;
 }
 
@@ -302,6 +341,12 @@
 .expandIcon {
   font-size: 14px !important;
   color: #7a7a7a;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.expandIcon.rotated {
+  transform: rotate(45deg);
 }
 
 .roomItems {
