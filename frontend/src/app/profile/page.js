@@ -9,6 +9,7 @@ import {
   TextField,
   InputAdornment
 } from '@mui/material'
+import toast, { Toaster } from 'react-hot-toast'
 
 import SearchIcon from '@mui/icons-material/Search'
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -181,6 +182,10 @@ export default function ProfilePage() {
   };
 
   const toggleCourse = (roomKey, course) => {
+    if (!isEditing) {
+      showEditWarning();
+      return;
+    }
     setRooms(prev => {
       const currentCourses = prev[roomKey].courses;
       const newCourses = currentCourses.includes(course)
@@ -193,15 +198,41 @@ export default function ProfilePage() {
     });
   };
 
+  const showEditWarning = () => {
+    toast('Please click "Edit" to modify your profile', {
+      id: 'edit-warning', // Use a constant ID so only one warning appears at a time
+      icon: '⚠️',
+      style: {
+        background: '#ffc107',
+        color: '#000',
+        fontWeight: 500,
+      },
+      position: 'top-center',
+      duration: 1000, // Auto-dismiss after 1 second
+    });
+  };
+
   const handleSkillChange = (skill) => {
+    if (!isEditing) {
+      showEditWarning();
+      return;
+    }
     setSkills(prev => ({ ...prev, [skill]: !prev[skill] }));
   };
 
   const handleMethodChange = (method) => {
+    if (!isEditing) {
+      showEditWarning();
+      return;
+    }
     setPreferredMethod(prev => ({ ...prev, [method]: !prev[method] }));
   };
 
   const handleHobbyChange = (hobby) => {
+    if (!isEditing) {
+      showEditWarning();
+      return;
+    }
     setHobbies(prev => ({ ...prev, [hobby]: !prev[hobby] }));
   };
 
@@ -228,6 +259,15 @@ export default function ProfilePage() {
 
   return (
     <Box className={styles.container}>
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: '#ffc107',
+            color: '#000',
+          },
+        }}
+      />
       <Navbar />
       
       <header className={styles.topHeader}>
@@ -313,51 +353,51 @@ export default function ProfilePage() {
             <Typography className={styles.formLabel}>Skills</Typography>
             <Box className={styles.checkboxGrid}>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.typescript} onChange={() => handleSkillChange('typescript')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.typescript} onChange={() => handleSkillChange('typescript')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>TypeScript</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.sql} onChange={() => handleSkillChange('sql')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.sql} onChange={() => handleSkillChange('sql')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>SQL</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.solidworks} onChange={() => handleSkillChange('solidworks')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.solidworks} onChange={() => handleSkillChange('solidworks')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>SolidWorks</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.javascript} onChange={() => handleSkillChange('javascript')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.javascript} onChange={() => handleSkillChange('javascript')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>JavaScript</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.cPlusPlus} onChange={() => handleSkillChange('cPlusPlus')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.cPlusPlus} onChange={() => handleSkillChange('cPlusPlus')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>C++</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.htmlCss} onChange={() => handleSkillChange('htmlCss')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.htmlCss} onChange={() => handleSkillChange('htmlCss')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>HTML/CSS</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.python} onChange={() => handleSkillChange('python')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.python} onChange={() => handleSkillChange('python')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Python</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.research} onChange={() => handleSkillChange('research')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.research} onChange={() => handleSkillChange('research')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Research</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.swiftUI} onChange={() => handleSkillChange('swiftUI')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.swiftUI} onChange={() => handleSkillChange('swiftUI')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>SwiftUI</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.dart} onChange={() => handleSkillChange('dart')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.dart} onChange={() => handleSkillChange('dart')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Dart</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.html} onChange={() => handleSkillChange('html')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.html} onChange={() => handleSkillChange('html')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>HTML</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={skills.django} onChange={() => handleSkillChange('django')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={skills.django} onChange={() => handleSkillChange('django')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Django</Typography>
               </Box>
             </Box>
@@ -367,19 +407,19 @@ export default function ProfilePage() {
             <Typography className={styles.formLabel}>Preferred Method</Typography>
             <Box className={styles.preferredGrid}>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={preferredMethod.online} onChange={() => handleMethodChange('online')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={preferredMethod.online} onChange={() => handleMethodChange('online')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Online</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={preferredMethod.synchronous} onChange={() => handleMethodChange('synchronous')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={preferredMethod.synchronous} onChange={() => handleMethodChange('synchronous')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Synchronous</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={preferredMethod.asynchronous} onChange={() => handleMethodChange('asynchronous')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={preferredMethod.asynchronous} onChange={() => handleMethodChange('asynchronous')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Asynchronous</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={preferredMethod.hybrid} onChange={() => handleMethodChange('hybrid')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={preferredMethod.hybrid} onChange={() => handleMethodChange('hybrid')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Hybrid</Typography>
               </Box>
             </Box>
@@ -389,51 +429,51 @@ export default function ProfilePage() {
             <Typography className={styles.formLabel}>Hobbies</Typography>
             <Box className={styles.checkboxGrid}>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.design} onChange={() => handleHobbyChange('design')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.design} onChange={() => handleHobbyChange('design')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Design</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.volunteering} onChange={() => handleHobbyChange('volunteering')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.volunteering} onChange={() => handleHobbyChange('volunteering')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Volunteering</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.skillBuilding} onChange={() => handleHobbyChange('skillBuilding')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.skillBuilding} onChange={() => handleHobbyChange('skillBuilding')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Skill Building</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.travelling} onChange={() => handleHobbyChange('travelling')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.travelling} onChange={() => handleHobbyChange('travelling')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Travelling</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.writing} onChange={() => handleHobbyChange('writing')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.writing} onChange={() => handleHobbyChange('writing')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Writing</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.sports} onChange={() => handleHobbyChange('sports')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.sports} onChange={() => handleHobbyChange('sports')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Sports</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.collecting} onChange={() => handleHobbyChange('collecting')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.collecting} onChange={() => handleHobbyChange('collecting')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Collecting</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.fitness} onChange={() => handleHobbyChange('fitness')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.fitness} onChange={() => handleHobbyChange('fitness')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Fitness</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.music} onChange={() => handleHobbyChange('music')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.music} onChange={() => handleHobbyChange('music')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Music</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.cooking} onChange={() => handleHobbyChange('cooking')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.cooking} onChange={() => handleHobbyChange('cooking')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Cooking</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.art} onChange={() => handleHobbyChange('art')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.art} onChange={() => handleHobbyChange('art')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Art</Typography>
               </Box>
               <Box className={styles.checkboxItem}>
-                <input type="checkbox" checked={hobbies.gaming} onChange={() => handleHobbyChange('gaming')} disabled={!isEditing} className={styles.checkbox} />
+                <input type="checkbox" checked={hobbies.gaming} onChange={() => handleHobbyChange('gaming')} className={styles.checkbox} />
                 <Typography className={styles.checkboxLabel}>Gaming</Typography>
               </Box>
             </Box>
@@ -475,7 +515,6 @@ export default function ProfilePage() {
                             type="checkbox"
                             checked={rooms[key].courses.includes(course)}
                             onChange={() => toggleCourse(key, course)}
-                            disabled={!isEditing}
                             className={styles.checkbox}
                           />
                           <Typography className={styles.checkboxLabel}>{course}</Typography>
