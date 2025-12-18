@@ -21,6 +21,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import UploadIcon from '@mui/icons-material/Upload';
 import styles from './landing.module.css'
 
+import axios from 'axios';
+const BACKEND_URL = 'http://localhost:4000';
+
 export default function Landing() {
   const [classes, setClasses] = useState([]);
   const [search, setSearch] = useState('');
@@ -29,15 +32,15 @@ export default function Landing() {
   const router = useRouter();
   
   const filteredClasses = classes.filter(classItem =>
-    classItem.code.toLowerCase().includes(search.toLowerCase()) ||
-    classItem.title.toLowerCase().includes(search.toLowerCase()) ||
+    classItem.id.toLowerCase().includes(search.toLowerCase()) ||
+    classItem.course_name.toLowerCase().includes(search.toLowerCase()) ||
     classItem.instructor.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleJoinClick = (classCode) => {
     setClasses(prevClasses => {
       const updatedClasses = prevClasses.map(classItem => {
-        if (classItem.code === classCode) {
+        if (classItem.id === classCode) {
           const newJoinedState = !classItem.joined;
           const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
           
@@ -60,17 +63,21 @@ export default function Landing() {
 
   useEffect(() => {
     const fetchClasses = async () => {
-      const classData = [
-        { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: false },
-        { code: "PHYSUN1494", title: 'Intro to Exp Phys-Lab', instructor: 'Giuseppina Cambareri (gc2019)', members: 42, joined: false },
-        { code: "PHYSUN2801", title: 'Accelerated Physics I', instructor: 'Yury Levin (yl3470)', members: 13, joined: false },
-      ];
+      // const classData = [
+      //   { code: "COMS4170", title: 'User Interface Design', instructor: 'Brian Smith (bas2137)', members: 18, joined: false },
+      //   { code: "PHYSUN1494", title: 'Intro to Exp Phys-Lab', instructor: 'Giuseppina Cambareri (gc2019)', members: 42, joined: false },
+      //   { code: "PHYSUN2801", title: 'Accelerated Physics I', instructor: 'Yury Levin (yl3470)', members: 13, joined: false },
+      // ];
+      const res = await axios.get(BACKEND_URL + '/api/classes');
+      const classData = res.data.classes;
+
+      console.log(res.data)
       
       const joinedCourses = JSON.parse(localStorage.getItem('joinedCourses') || '{}');
       
       const updatedClassData = classData.map(classItem => ({
         ...classItem,
-        joined: joinedCourses[classItem.code] || false
+        joined: joinedCourses[classItem.id] || false
       }));
       
       setClasses(updatedClassData);
@@ -131,10 +138,10 @@ export default function Landing() {
               <Grid item size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                 <Box className={styles.classCard}>
                   <Typography className={styles.classCode}>
-                    {classItem.code}
+                    {classItem.id}
                   </Typography>
                   <Typography className={styles.classTitle}>
-                    {classItem.title}
+                    {classItem.course_name}
                   </Typography>
                   <Box>
                     <InstructorIcon className={styles.instructorIcon} />
@@ -148,7 +155,7 @@ export default function Landing() {
                       {classItem.members} members
                     </Typography>
                   </Box>
-                  <Button className={`${styles.joinButton} ${classItem.joined ? styles.joined : ''}`} onClick={() => handleJoinClick(classItem.code)}>
+                  <Button className={`${styles.joinButton} ${classItem.joined ? styles.joined : ''}`} onClick={() => handleJoinClick(classItem.id)}>
                     {classItem.joined ? 
                     <>
                       <CheckmarkIcon className={styles.checkmark} />
