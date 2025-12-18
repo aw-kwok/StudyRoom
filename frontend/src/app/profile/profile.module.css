@@ -338,6 +338,7 @@
 .roomsList {
   margin-left: 120px;
   margin-top: -18px;
+  overflow: hidden;
 }
 
 .roomCategory {
