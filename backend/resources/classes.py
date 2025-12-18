@@ -6,10 +6,7 @@ db = firestore.Client()
 
 class ClassResource(Resource):
     def get(self):
-        print("hi")
         codes = request.args.getlist('codes')
-
-        print (codes)
 
         if not codes:
             codes_str = request.args.get('codes')
