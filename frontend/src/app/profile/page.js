@@ -257,6 +257,11 @@ export default function ProfilePage() {
     { name: 'Alan Smithee', hobbies: 8, rooms: 2, online: false },
   ]
 
+  const filteredMatches = matches.filter(
+    match =>
+      match.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <Box className={styles.container}>
       <Toaster 
@@ -557,7 +562,7 @@ export default function ProfilePage() {
           </Box>
 
           <Box className={styles.matchesList}>
-            {matches.map((match, i) => (
+            {filteredMatches.map((match, i) => (
               <Box key={i} className={styles.matchItem}>
                 <Box className={styles.matchAvatar}>
                   {match.online && <Box className={styles.matchOnline}></Box>}
